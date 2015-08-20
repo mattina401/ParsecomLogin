@@ -34,21 +34,29 @@ public class LoginSignupActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.login);
         signupButton = (Button) findViewById(R.id.signup);
 
+        // 로그인 버튼 클릭시
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // 입력한 string 값 받아옴
                 usernametxt = username.getText().toString();
                 passwordtxt = password.getText().toString();
 
+                // user가 db에 있나 확인
                 ParseUser.logInInBackground(usernametxt, passwordtxt, new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException e) {
+
+                        //유저가 있으면
                         if(user != null) {
 
+                            // welcome 으로 이동
                             Intent intent = new Intent(LoginSignupActivity.this, WelcomeActivity.class);
                             startActivity(intent);
                             finish();
 
+                            // 유저가 없으면
                         } else {
                             Toast.makeText(getApplicationContext(), "this user doesnot exist. plz signup", Toast.LENGTH_SHORT).show();
                         }
@@ -57,24 +65,35 @@ public class LoginSignupActivity extends AppCompatActivity {
             }
         });
 
+        // 사인업 버튼 눌렀을때
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 usernametxt = username.getText().toString();
                 passwordtxt = password.getText().toString();
 
+                // 아무것도 입력 안됬을때
                 if(usernametxt.equals("") && passwordtxt.equals("")) {
                     Toast.makeText(getApplicationContext(), "plz complete the sign up form", Toast.LENGTH_SHORT).show();
+
+                // 입력됨
                 } else {
 
+                    // db에 저장
                     ParseUser user = new ParseUser();
                     user.setUsername(usernametxt);
                     user.setPassword(passwordtxt);
                     user.signUpInBackground(new SignUpCallback() {
+
+                        // 다 끝나고
                         @Override
                         public void done(ParseException e) {
+
+                            // 에러 없으면
                             if(e == null) {
                                 Toast.makeText(getApplicationContext(), "successfully signed up", Toast.LENGTH_SHORT).show();
+
+                            // 에러 있을때
                             } else {
                                 Toast.makeText(getApplicationContext(), "sign up error", Toast.LENGTH_SHORT).show();
                             }
